@@ -1,14 +1,23 @@
-.MODEL SMALL 
-.STACK 100H
-.CODE
-   MAIN PROC
-      MOV [110H],11H
-      MOV [1102H],1004H
-      MOV AX,1100H
-      MOV BX,1102H
-      ADD AX,BX
-      MOV [1200H],AX
-               
-               
-   MAIN ENDP
-END MAIN
+.Model Small 
+.stack 100h
+.data
+dt1 db 0Ah
+dt2 db 0Fh
+
+
+.code    
+        MAIN PROC
+            
+    mov bx,@data
+    mov ds,bx
+    mov bl,dt1
+    mov bh,dt2
+   sub bl,bh 
+    mov ax,0
+    mov ah,bh
+    
+    mov ah,2h
+    int 21h 
+
+
+ end

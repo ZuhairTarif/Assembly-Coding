@@ -5,24 +5,24 @@ main proc
     mov ah,1
     int 21h 
     cmp al,'1'
-    je onethree
+    je if
     cmp al,'3'
-    je onethree
+    je if
 
     cmp al,'2'
-    je twofour
+    je else
     cmp al,'4'
-    je twofour
+    je else
 
 
-  onethree:
+  if:
   mov dl, 'o'
   mov ah,2
   int 21h
   jmp exit
 
 
-  twofour:
+  else:
   mov dl, 'e'
   mov ah,2
   int 21h

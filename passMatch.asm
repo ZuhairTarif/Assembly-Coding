@@ -1,58 +1,52 @@
 .model small
-
 .stack 100h
-
-.data 
-
-password db "mypassword" , 0DH,0AH,24H
-input db "Enter your password: ",0DH,0AH,24H
-msg1 db "Password Matched" , 0DH,0AH,24H
-msg2 db "Password Not Matched" , 0DH,0AH,24H
-
-
-.code 
+.data
+PASSWORD DB 'mypassword'
+LEN EQU ($-PASSWORD) ;ASM constant for string
+MSG1 DB 10,13,'ENTER YOUR PASSWORD: $'
+MSG2 DB 10,13,'Matched$'
+MSG3 DB 10,13,'Not Matched!$'
+NEW DB 10,13,'$'
+INST DB 10 DUP(0)
+.code
 main proc
-    
-    mov ax,@DATA
-    mov ds,ax
-    
-    
-    mov ah,9
-    lea dx, input
-    int 21h
-    mov ah,10
-    int 21h 
-    
- 
-    
-    cmp al,password
-    je matched
-    jne notmatched
-    
-    matched: 
-    mov ah,9
-    lea dx, msg1
-    int 21h
-    jmp exit
-    
-    notmatched: 
-    mov ah,9
-    lea dx, msg2
-    int 21h
-    jmp exit
-    
-    
-    exit:
-    
-   mov ah,4ch
-   
-   
+START:
+MOV AX,DATA
+MOV DS,AX ;initialize ds
+LEA DX,MSG1 ;load msg1
+MOV AH,09H
+INT 21H
+MOV SI,00 ;memory zero
+UP1:
+MOV AH,08H
+INT 21H
+CMP AL,0DH
+JE DOWN
+MOV [INST+SI],AL
+MOV DL,'*'
+MOV AH,02H
+INT 21H
+INC SI
+JMP UP1
+DOWN:
+MOV BX,00
+MOV CX,LEN
+CHECK:
+MOV AL,[INST+BX]
+MOV DL,[PASSWORD+BX]
+CMP AL,DL
+JNE FAIL
+INC BX
+LOOP CHECK
+LEA DX,MSG2
+MOV AH,09H
+INT 21H
+JMP FINISH
+FAIL:
+LEA DX,MSG3
+MOV AH,009H
+INT 21H
+FINISH:
+INT 3
 main endp
 end main
-    
-    
-    
-    
-    
-
- 

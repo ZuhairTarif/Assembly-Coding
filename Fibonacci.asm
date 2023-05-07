@@ -14,12 +14,12 @@ fibonacci:
 
     ; compute next Fibonacci number
     add bx, ax
-    mov ax, bx
+    add ax, bx
     inc dl
     
     
 
-    ; jump back to the start of the loop
+    ; loop back to the start
     loop fibonacci
 
 done:
